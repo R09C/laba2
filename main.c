@@ -96,11 +96,11 @@ int main()
     while (1)
     {
         read_fds = master_fds;                                     // Копируем множество для select
-        int ret = select(max_fd + 1, &read_fds, NULL, NULL, NULL); // Используем select для мультиплексирования
+        int ret = pselect(max_fd + 1, &read_fds, NULL, NULL, NULL, &origSigMask); // Используем pselect для мультиплексирования
 
         if (ret == -1)
         {
-            perror("select"); // Ошибка в select
+            perror("pselect"); // Ошибка в pselect
             break;
         }
 
