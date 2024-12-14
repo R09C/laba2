@@ -1,21 +1,14 @@
-FROM ubuntu:20.04
+# Используем базовый образ с поддержкой C
+FROM gcc:latest
 
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    gcc \
-    make \
-    man-db \
-    libpthread-stubs0-dev \
-    libssl-dev \
-    libpcap-dev \
-    netcat \
-    vim \
-    && rm -rf /var/lib/apt/lists/*
+# Копируем исходный код в контейнер
+COPY main.c /usr/src/myapp.c
 
-COPY . /usr/src/myapp
+# Компилируем приложение
+RUN gcc -o /usr/local/bin/myapp /usr/src/myapp.c
 
-WORKDIR /usr/src/myapp
+# Открываем порт 8080
+EXPOSE 8080
 
-RUN make clean && make
-
-CMD ["./myapp"]
+# Определяем команду по умолчанию
+CMD ["myapp"]
