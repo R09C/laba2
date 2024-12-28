@@ -1,17 +1,7 @@
-CC=gcc
-CFLAGS=-Wall -g
-LDFLAGS=
-SOURCES=server.c
-OBJECTS=$(SOURCES:.c=.o)
-EXECUTABLE=myapp
+obj-m += primes.o
 
-all: $(EXECUTABLE)
-
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
-
-.c.o:
-	$(CC) $(CFLAGS) -c $< -o $@
+all:
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
 
 clean:
-	rm -f $(OBJECTS) $(EXECUTABLE)
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
